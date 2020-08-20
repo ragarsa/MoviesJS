@@ -18,7 +18,7 @@ const mockData = [
         isAvailable: true
     },
     {
-        title: 'La lista de Schindlezr',
+        title: 'La lista de Schindler',
         duration: '194 min',
         director: 'Steven Spielbergs',
         gender: 'Historia',
@@ -60,7 +60,7 @@ const getMovies = () => {
         const html = `
         <article>
             <h4>${movie.title}</h4>
-            <p>Duración: ${movie.duration} min</p>
+            <p>Duración: ${movie.duration}</p>
             <p>Director: ${movie.director}</p>
             <p>Género: ${movie.gender}</p>
             <p>País: ${movie.country}</p>
@@ -83,13 +83,23 @@ document.addEventListener('DOMContentLoaded', getMovies()) //Observador cuando s
 //VALIDACIONES
 const nameInput = document.querySelector('#name-input')
 const directorInput = document.querySelector('#director-input')
+//const genderInput = document.querySelector('#gender-input')
+const countryInput = document.querySelector('#country-input');
+const sinopsisInput = document.querySelector('#sinopsis-input');
 const errorsList = document.querySelector('#errors')
 
 const errors = { //objeto
     'name.lengthInvalid': {isActive: false, message: 'El nombre debe ser de al menos 4 letras'},
     'name.capitalLetter': {isActive:false, message: 'El nombre debe incluir la primera letra mayúscula'}, 
     'director.lengthInvalid': {isActive: false, message: 'El nombre del director debe ser de al menos 4 letras'},
-    'director.capitalLetter': {isActive:false, message: 'El nombre del director debe incluir la primera letra mayúscula'}
+    'director.capitalLetter': {isActive:false, message: 'El nombre del director debe incluir la primera letra mayúscula'},
+    'country.lengthInvalid': {isActive: false, message: 'El nombre del país debe ser de al menos 4 letras'},
+    'country.capitalLetter': {isActive:false, message: 'El nombre del país debe incluir la primera letra mayúscula'},
+    'sinopsis.lengthMaxInvalid': {isActive: false, message: 'La sinopsis no debe superar los 140 carácteres'},
+    'sinopsis.lengthInvalid': {isActive: false, message: 'La sinopsis debe ser de al menos 10 letras'},
+    'sinopsis.capitalLetter': {isActive:false, message: 'La primera letra de la sinopsis debe ser mayúscula'}
+
+
 }
 
 const printErrors = () => {
@@ -106,7 +116,8 @@ const printErrors = () => {
 //Otras variables con las condiciones para validar texto
 const isLengthInvalid = (value) => value.length < 4;
 const isCapitalLetter = (value) => value && value[0] !== value[0].toUpperCase();
-
+const isLengthMaxInvalid = (value) => value.length > 140;  
+const isSinopsisLengthInvalid = (value) => value.length < 10;
 
 nameInput.addEventListener('input', (event) => {
     const textValue = event.target.value;
@@ -140,6 +151,45 @@ directorInput.addEventListener('input', (event) => {
         errors['director.capitalLetter'].isActive = true
     } else {
         errors['director.capitalLetter'].isActive = false
+    }
+    printErrors();
+});
+
+countryInput.addEventListener('input', (event) => {
+    const textValue = event.target.value;
+    
+    if (isLengthInvalid(textValue)){
+        errors['country.lengthInvalid'].isActive = true
+    } else {
+        errors['country.lengthInvalid'].isActive = false
+    }
+
+    if (isCapitalLetter(textValue)){
+        errors['country.capitalLetter'].isActive = true
+    } else {
+        errors['country.capitalLetter'].isActive = false
+    }
+    printErrors();
+});
+
+sinopsisInput.addEventListener('input', (event) => {
+    const textValue = event.target.value;
+    
+    if (isSinopsisLengthInvalid(textValue)){
+        errors['sinopsis.lengthInvalid'].isActive = true
+    } else {
+        errors['sinopsis.lengthInvalid'].isActive = false
+    }
+
+    if (isCapitalLetter(textValue)){
+        errors['sinopsis.capitalLetter'].isActive = true
+    } else {
+        errors['sinopsis.capitalLetter'].isActive = false
+    }
+    if (isLengthMaxInvalid(textValue)){
+        errors['sinopsis.lengthMaxInvalid'].isActive = true;
+    } else {
+        errors['sinopsis.lengthMaxInvalid'].isActive = false;
     }
     printErrors();
 });

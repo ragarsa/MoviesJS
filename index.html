@@ -1,33 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Movies SPA</title>
-
+    <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <h1>Actosoft Movies App</h1>
     <section id="movies-list">
-        <h3>Películas disponibles</h3> 
+        <h3>Películas disponibles</h3>
     </section>
     <section id="movies-form">
         <h3>Agrega una nueva película</h3>
-        <form action="." method="GET">
-            <input type="text"
-                placeholder="Título de la película: "
-                name="name"
-                id="name-input"
-            >
-            <input type="text"
-                placeholder="Director: "
-                name="director"
-                id="director-input"
-            >
+        <form class="form-movie" action="." method="GET">
+            <label for="name-input">Título de la película:</label>
+            <input type="text" placeholder="Título de la película: " name="name" id="name-input">
+            <label for="director-input">Director:</label>
+            <input type="text" placeholder="Director: " name="director" id="director-input">
+            <label for="genero-input"> Género: </label>
+            <select name="gender-input" id="gender-input"> 
+                <option value="male">Masculino</option> 
+                <option value="female"> Femenino </option>
+                <option value="other" selected=""> Otro </option>
+            </select>
+        
+            <label for="country-input"> País: </label>
+            <input type="text" placeholder="País" name="pais" id="country-input">
+            <label for="sinopsis-input"> Sinópsis: </label>
+            <textarea type="text" placeholder="Sinópsis: " name="sinopsis" id="sinopsis-input"></textarea>
+
+            <p> Disponible: </p>
+            <label class="available" for="id"> Si </label>
+            <input class="available" type="radio" name="Available" id="available-input">
+            <label class="available" for="id"> No </label>
+            <input class="available" type="radio" name="Available" id="no-available-input" selected = "">
+            <input type="submit" value="Enviar datos">
             
         </form>
         <ul id="errors"></ul>
     </section>
     <script src="main.js"></script>
 </body>
+
 </html>

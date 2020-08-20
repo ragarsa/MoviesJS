@@ -1,0 +1,48 @@
+body{
+    width: 50%;
+    font-size: 62.5%;
+    margin: 1rem;
+    position: relative;
+}
+
+p{
+    font-size: 1rem;
+}
+
+label {
+    margin: 0.5rem;
+    padding: 0.1rem;
+    display: block;
+    align-items: flex-start;
+    justify-content: flex-start;
+    font-size: 1rem;
+    bottom: 0.5rem
+}
+
+
+#sinopsis-input {
+    width: 30vw;
+    height: 30vh;
+    margin: 0.5rem;
+    right: 0.5rem;
+}
+
+form .radio-input {
+    margin: 0.5rem;
+    padding: 0.1rem;
+    display: flex;
+    align-items: initial;
+    position: absolute;
+   
+}
+
+.available {
+    margin: 0.5rem;
+    display: inline;
+    top: -0.5rem:
+}
+
+input {
+    display: flex;
+    margin: 0.1rem;
+}
