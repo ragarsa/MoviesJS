@@ -13,6 +13,7 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 const db = firebase.firestore(); //Base de datos de firestore, se guarda la referencia a la base de datos
+const storage = firebase.storage();
 const provider = new firebase.auth.GoogleAuthProvider();
 const sendButton = document.querySelector('#sendMessage')
 const messageInput = document.querySelector('#message')
@@ -21,7 +22,11 @@ const googleButton = document.querySelector('#loginWithGoogle')
 const logOutButton = document.querySelector('#logOut')
 const userInfoContainer = document.querySelector('#userInfo');
 const buttonsContainer = document.querySelector('#buttons')
+const imageInput = document.querySelector('#imageInput')
+
 //Para mandarlo a firebase se manda a la base de datos
+
+
 
 logOutButton.addEventListener('click', event => {
     event.preventDefault();
@@ -46,14 +51,61 @@ googleButton.addEventListener('click', event => {
         })
 })
 
+function uploadStorage(file, docId){
+    return new Promise(function(resolve, reject){
+        const imageRef = storage.ref(`chat/images/${docId}.${file.type.split('/')[1]}`)
+        imageRef.put(file)
+            .then(function(){
+                imageRef.getDownloadURL()
+                    .then(function(url){
+                        resolve(url)
+                    })
+            })
+    })      
+    let url = '';
+    
+    imageRef.put(file) //sirve para subir el file
+        .then(snapShot =>{
+            console.log(snapShot)
+            snapShot.ref.getDownloadURL()
+                .then(url =>{
+                    //console.log(url)
+                    imageUrl = url
+                })
+                .catch(error =>{
+                    console.log(error)
+                })
+        })
+        .catch (error =>{
+            console.log(error)
+        })
+        return imageUrl
+}
+
 sendButton.addEventListener('click', function (event) { //siempre el callback, lo que queremos que ocurra cuando sucede el evento
     event.preventDefault(); //callback se podría escribir como function(event){ event.preventDefault()}
-    //console.log(messageInput.value) con .log vemos si funciona o no
+    const image = imageInput.files[0]
+    //const imageUrl = uploadStorage(image, 'testote')
+
+    //console.log(messageInput.value) //console.log vemos si funciona o no
+    
     db.collection('mensajes').add({
         message: messageInput.value,
         timestamp: firebase.firestore.Timestamp.now()
-    }).then(function () {
-        alert('Mensaje guardado correctamente')
+    }).then(function (docRef) { //referencia del documento que se acaba de crear en firebase
+        //alert('Mensaje guardado correctamente')
+        uploadStorage(image, docRef.id)
+            .then(function(url){
+                db.collection('mensajes').doc(docRef.id).update({
+                    image : url
+            })
+        
+        }).then (() =>{
+            console.log('funciona')
+        }).catch((error)=>
+        {
+            console.log('NO FUNCIONA')
+        })
     }).catch(function (error) {
         console.log(error) //se imprime en consola
         alert('No se pudo guardar el mensaje')
@@ -101,4 +153,5 @@ document.addEventListener('DOMContentLoaded', () => {
             messageContainer.innerHTML = innerHtml;
         })
 });
+
 
